@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '~/utils/api'
 import { useMutation } from '@tanstack/react-query'
+import StripeContainer from '../Payments/StripeContainer'
 
 type price={
     from:string,
@@ -75,6 +76,9 @@ export default function Buy() {
     <div className="card-actions justify-end">
       <button className="btn btn-primary">Buy Now</button>
     </div>
+    </div>
+    <div>
+        <StripeContainer/>
     </div>
   </div>
   )

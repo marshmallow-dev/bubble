@@ -41,9 +41,21 @@ export const priceRouter = createTRPCRouter({
     .input(z.object({ from: z.string() }))
     .mutation(async ({ input }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const price: any = await getPrice(input.from.toLowerCase(), "1", "usdt");
+      let price: never | any | unknown = await getPrice(
+        input.from.toLowerCase(),
+        "1",
+        "usdt"
+      );
+
+      if (input.from.toLowerCase() === "cardano") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        price = await getPrice("cad", "1", "usdt");
+      } else if (input.from.toLowerCase() === "solana") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        price = await getPrice("sol", "1", "usdt");
+      }
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      console.log({ price });
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       return { price: price["usdt".toUpperCase()] };
     }),

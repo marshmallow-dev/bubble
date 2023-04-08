@@ -6,7 +6,7 @@ export default function Exchange() {
   return (
     <>
         <NavBar/>
-    <div className='flex justify-center align-middle content-center mt-7'>
+    <div className='flex justify-center align-middle content-center mt-7  py-10'>
     <Buy/>
     </div>
 
