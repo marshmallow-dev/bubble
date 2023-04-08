@@ -67,7 +67,7 @@ export default function PaymentModal({amountToBuy,CryptoType}) {
 </div>
             <fieldset className="FormGroup">
                 <div className=''>
-                    <CardElement options={CARD_OPTIONS}/>
+                    <CardElement />
                 </div>
             </fieldset>
             <button className='btn my-5'>{data?"submit":"Pay"}</button>

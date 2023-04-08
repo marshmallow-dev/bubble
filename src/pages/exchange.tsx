@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
-import NavBar from '../components/navbar'
+import NavBar from '~/components/NavBar'
 import Buy from '~/components/Cards/Buy'
 export default function Exchange() {
   return (
