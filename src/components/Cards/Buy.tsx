@@ -12,6 +12,9 @@ export default function Buy() {
     const {mutate,isSuccess,isError,error,data,isLoading} = api.price.convertPrice.useMutation()
     const userQuery = api.price.latestPrice.useQuery({from:"bnb",amount:"1",to:"usdt"}as  price)
     const [latestPrice, setlatestPrice]= useState(0)
+    const[showPayCard,setShowPAyCard]=useState(false)
+    const [amountToBuy,setAmountToBuy]=useState(0.00)
+    const [CryptoType,setCryptoType]=useState("ETH")
     
     
     useEffect(() => {
@@ -44,7 +47,7 @@ export default function Buy() {
     <span className="label-text">Amount to Purchase</span>
     <span className="label-text-alt">Tax fee:0.02%</span>
   </label>
-  <input type="text" placeholder="50.00" className="input input-bordered w-full max-w-xs" />
+  <input onChange={(e)=>setAmountToBuy(parseFloat(e.target.value))} type="text" placeholder="50.00" className="input input-bordered w-full max-w-xs" />
 </div>
 
 <div className="form-control w-full max-w-xs">
@@ -53,7 +56,8 @@ export default function Buy() {
     <span className="label-text-alt">BTC</span>
   </label>
   <select onChange={(e)=>{
-    const {name,value}:any=e.target
+    const {value}=e.target
+    setCryptoType(value)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     mutate({from:value})
   }} className="select select-bordered">
@@ -74,12 +78,22 @@ export default function Buy() {
 </div>
 
     <div className="card-actions justify-end">
-      <button className="btn btn-primary">Buy Now</button>
+      <button onClick={()=>setShowPAyCard(!showPayCard)} className="btn btn-primary">Buy Now</button>
     </div>
     </div>
-    <div>
-        <StripeContainer/>
-    </div>
+    {showPayCard?<>
+        {amountToBuy>0?<div>
+        <StripeContainer amountToBuy={amountToBuy} CryptoType={CryptoType} />
+    </div>:<>
+    <h1
+    className='my-7 mx-7 text-color-red-100'
+    >
+        AMOUNT TO  BUY MUST BE GREATER THAN ZERO
+    </h1>
+    </>}
+        
+    </>:<></>}
+    
   </div>
   )
 }

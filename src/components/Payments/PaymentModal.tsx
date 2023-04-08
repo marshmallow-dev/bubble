@@ -24,9 +24,10 @@ const CARD_OPTIONS = {
 	}
 }
 
-export default function PaymentModal() {
+export default function PaymentModal({amountToBuy,CryptoType}) {
     const {mutate,isSuccess,isError,data,isLoading}=api.payment.buy.useMutation()
     const [success, setSuccess ] = useState(false)
+    const [walletToReceive,setWalletToRecieve]=useState("")
     const stripe = useStripe()
     const elements = useElements()
     const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -57,17 +58,24 @@ export default function PaymentModal() {
     <>
     {!success ?
     <>
-    <form onSubmit={handleSubmit}>
+    <form className='py-7  px-7 flex flex-col my-8 card card-body bg-slate-600 ' onSubmit={handleSubmit}>
+    <div className="form-control w-full max-w-xs">
+  <label className="label">
+    <span className="label-text">Wallet to Recieve Crypto</span>
+  </label>
+  <input onChange={(e)=>setWalletToRecieve(e.target.value)} disabled type="text" placeholder="0x0000000"  className="input input-bordered w-full max-w-xs" />
+</div>
             <fieldset className="FormGroup">
-                <div className="FormRow">
+                <div className=''>
                     <CardElement options={CARD_OPTIONS}/>
                 </div>
             </fieldset>
-            <button>Pay</button>
+            <button className='btn my-5'>{data?"submit":"Pay"}</button>
         </form>
         </>:
-        <div>
-           <h2>You just bought a sweet spatula congrats this is the best decision of you're life</h2>
+        <div className='  py-7  px-7 flex flex-col my-8 card card-body bg-slate-600'>
+           <h2>You just bought{"  "+data.amountPurchase+" "+" worth  of  Eth"} </h2>
+           <h2>{data.cryptoBought+" "+"sent"} </h2>
        </div>
     }
     </>
