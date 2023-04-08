@@ -10,8 +10,8 @@ type price={
 }
 export default function Buy() {
     const {mutate,isSuccess,isError,error,data,isLoading} = api.price.convertPrice.useMutation()
-    const userQuery = api.price.latestPrice.useQuery({from:"bnb",amount:"1",to:"usdt"}as  price)
-    const [latestPrice, setlatestPrice]= useState(0)
+   // const userQuery = api.price.latestPrice.useQuery({from:"bnb",amount:"1",to:"usdt"}as  price)
+    const [latestPrice, setlatestPrice]= useState(0.00)
     const[showPayCard,setShowPAyCard]=useState(false)
     const [amountToBuy,setAmountToBuy]=useState(0.00)
     const [CryptoType,setCryptoType]=useState("ETH")
@@ -20,10 +20,16 @@ export default function Buy() {
     useEffect(() => {
         if(isSuccess){
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            setlatestPrice(data.price)
+            if(amountToBuy>0.00){
+                setlatestPrice(data.price*amountToBuy)
+            }else{
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                setlatestPrice(data.price)
+            }
+            
             console.log(data.price)
         }
-    }, [isSuccess])
+    }, [isSuccess,amountToBuy])
 
     useEffect(()=>{
         if(isError){
@@ -36,7 +42,7 @@ export default function Buy() {
     })
     
 
-    console.log(userQuery.data?.price)
+   // console.log(userQuery.data?.price)
   return (
     <div className="card w-96 bg-base-100 shadow-xl ">
 <figure><img src="https://res.cloudinary.com/daniel23/image/upload/v1680942757/WhatsApp_Image_2023-02-25_at_22.10.05_insl2w.jpg" alt="Shoes" /></figure>
@@ -58,8 +64,13 @@ export default function Buy() {
   <select onChange={(e)=>{
     const {value}=e.target
     setCryptoType(value)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    if(value==="fantom"){
+        mutate({from:"ftm"})
+    }else{
+         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     mutate({from:value})
+    }
+   
   }} className="select select-bordered">
     <option disabled selected>Pick Crypto</option>
     <option>BTC</option>
@@ -68,6 +79,7 @@ export default function Buy() {
     <option>AVAX</option>
     <option>SOLANA</option>
     <option>CARDANO</option>
+    <option>fantom</option>
   </select>
 </div>
 <div className="form-control w-full max-w-xs">

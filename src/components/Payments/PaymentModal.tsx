@@ -63,7 +63,7 @@ export default function PaymentModal({amountToBuy,CryptoType}) {
   <label className="label">
     <span className="label-text">Wallet to Recieve Crypto</span>
   </label>
-  <input onChange={(e)=>setWalletToRecieve(e.target.value)} disabled type="text" placeholder="0x0000000"  className="input input-bordered w-full max-w-xs" />
+  <input onChange={(e)=>setWalletToRecieve(e.target.value)}  type="text" placeholder="0x0000000"  className="input input-bordered w-full max-w-xs" />
 </div>
             <fieldset className="FormGroup">
                 <div className=''>
@@ -74,8 +74,8 @@ export default function PaymentModal({amountToBuy,CryptoType}) {
         </form>
         </>:
         <div className='  py-7  px-7 flex flex-col my-8 card card-body bg-slate-600'>
-           <h2>You just bought{"  "+data.amountPurchase+" "+" worth  of  Eth"} </h2>
-           <h2>{data.cryptoBought+" "+"sent"} </h2>
+           <h2>You just bought{data?"  "+data.amountPurchase+" "+" worth  of  Eth":""} </h2>
+           <h2>{data?data.cryptoBought+" "+"sent":""} </h2>
        </div>
     }
     </>

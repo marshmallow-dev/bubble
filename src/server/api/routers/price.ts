@@ -59,6 +59,49 @@ export const priceRouter = createTRPCRouter({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       return { price: price["usdt".toUpperCase()] };
     }),
+  convertAnyPrice: publicProcedure
+    .input(z.object({ from: z.string(), amount: z.string() }))
+    .mutation(async ({ input }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      let price: never | any | unknown;
+
+      switch (input.from.toLowerCase()) {
+        case "cardano":
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          price = await getPrice("cad", input.amount.toLowerCase(), "usdt");
+          break;
+        case "solana":
+          // code block
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          price = await getPrice("sol", input.amount.toLowerCase(), "usdt");
+          break;
+        default:
+          // code block
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          price = await getPrice(
+            input.from.toLowerCase(),
+            input.amount.toLowerCase(),
+            "usdt"
+          );
+      }
+
+      //   if (input.from.toLowerCase() === "cardano") {
+      //     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      //     price = await getPrice("cad", input.amount.toLowerCase(), "usdt");
+      //   } else if (input.from.toLowerCase() === "solana") {
+      //     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      //     price = await getPrice("sol", input.amount.toLowerCase(), "usdt");
+      //   }
+      //   if (input.from.toLowerCase() === "fantom") {
+      //     console.log(input.from.toLowerCase());
+      //     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      //     price = await getPrice("ftm", input.amount.toLowerCase(), "usdt");
+      //   }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      return { price: price["usdt".toUpperCase()] };
+    }),
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
